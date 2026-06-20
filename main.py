@@ -26,8 +26,8 @@ app = FastAPI(
 
 @app.post("/recipes", response_model=RecipeResponse)
 async def create_recipe(
-        recipe: RecipeCreate,
-        db: AsyncSession = Depends(get_db),
+    recipe: RecipeCreate,
+    db: AsyncSession = Depends(get_db),
 ):
     new_recipe = Recipe(**recipe.dict())
 
