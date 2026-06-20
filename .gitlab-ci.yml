@@ -1,0 +1,15 @@
+image: python:3.11
+
+stages:
+  - lint
+
+before_script:
+  - pip install -r requirements.txt
+
+lint:
+  stage: lint
+  script:
+    - black --check .
+    - isort --check-only .
+    - flake8 .
+    - mypy .
