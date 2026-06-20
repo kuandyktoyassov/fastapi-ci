@@ -66,7 +66,7 @@ async def get_recipe(recipe_id: int, db: AsyncSession = Depends(get_db)):
     if recipe is None:
         raise HTTPException(status_code=404, detail="Recipe not found")
 
-    recipe.views += 1
+    recipe.views = recipe.views + 1
     await db.commit()
     await db.refresh(recipe)
 
