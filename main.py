@@ -20,15 +20,12 @@ app = FastAPI(
     title="Cook Book API",
     description="API для кулинарной книги",
     version="1.0",
-    lifespan=lifespan
+    lifespan=lifespan,
 )
 
 
 @app.post("/recipes", response_model=RecipeResponse)
-async def create_recipe(
-    recipe: RecipeCreate,
-    db: AsyncSession = Depends(get_db)
-):
+async def create_recipe(recipe: RecipeCreate, db: AsyncSession = Depends(get_db)):
     new_recipe = Recipe(**recipe.dict())
 
     db.add(new_recipe)
@@ -39,14 +36,9 @@ async def create_recipe(
 
 
 @app.get("/recipes")
-async def get_recipes(
-    db: AsyncSession = Depends(get_db)
-):
+async def get_recipes(db: AsyncSession = Depends(get_db)):
     result = await db.execute(
-        select(Recipe).order_by(
-            desc(Recipe.views),
-            Recipe.cooking_time
-        )
+        select(Recipe).order_by(desc(Recipe.views), Recipe.cooking_time)
     )
 
     recipes = result.scalars().all()
@@ -56,20 +48,15 @@ async def get_recipes(
             "id": recipe.id,
             "title": recipe.title,
             "views": recipe.views,
-            "cooking_time": recipe.cooking_time
+            "cooking_time": recipe.cooking_time,
         }
         for recipe in recipes
     ]
 
 
 @app.get("/recipes/{recipe_id}", response_model=RecipeResponse)
-async def get_recipe(
-    recipe_id: int,
-    db: AsyncSession = Depends(get_db)
-):
-    result = await db.execute(
-        select(Recipe).where(Recipe.id == recipe_id)
-    )
+async def get_recipe(recipe_id: int, db: AsyncSession = Depends(get_db)):
+    result = await db.execute(select(Recipe).where(Recipe.id == recipe_id))
 
     recipe = result.scalar_one_or_none()
 
