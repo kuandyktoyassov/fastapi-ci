@@ -1,10 +1,10 @@
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, Depends, HTTPException
-from sqlalchemy import select, desc
+from fastapi import Depends, FastAPI, HTTPException
+from sqlalchemy import desc, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from database import engine, Base, get_db
+from database import Base, engine, get_db
 from models import Recipe
 from schemas import RecipeCreate, RecipeResponse
 
